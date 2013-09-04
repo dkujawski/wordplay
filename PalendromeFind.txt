@@ -5,3 +5,32 @@ Example input:
 
 Extra credit:
 Please analyze the runtime of your solution. Can you improve on it?
+
+
+Notes:
+
+With emphasis on the "longest" palendrome one idea would be first to start spliting the string and looking for long palendromes.
+
+What is a palendrome?
+http://en.wikipedia.org/wiki/Palindrome
+
+challenges:
+- is the string a palendrome?
+- strategy for evaluating sub strings in a large string
+- generate randome stings
+- what if the string was larger than what could fit in RAM?
+- profile
+
+examples:
+
+ABBA
+CDC
+ABCDEFGFEDCBA
+
+notice that you don't start recognizing the palendrome until the mirror starts
+
+idea: to start in the middle of the string and work your way towards the ends
+idea: start with len of string, decrement and shift the sub string across the entire string.
+
+
+
