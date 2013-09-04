@@ -1,0 +1,17 @@
+Word Find:
+Given any 2x2 array of letters and a Dictionary.isWord( x:string ):boolean method, write code (real or pseudo) that will output an array of all the English words found.
+
+Rules:
+1.  Words are found by stringing any number of neighboring letters together.  For example: Using the example input below, the word TAB may be formed by concatenating [0][1], [1][1], [2][1].
+2.  Neighbors are considered touching on any side, including diagonally.  This means that any non-edge letter will have 8 neighbors.  For example: The word LABS may be formed by concatenating [2][0], [1][1], [2][1], [1][0].
+3.  You may not use the same coordinate more than once in the same word.  For example: The word PEOPLE ([3][0], [3][1], [4][0], [4][1], [4][2], [3][1]) would not qualify because [3][1] was used twice.
+
+Example input:
+  [[ I, T, N, D, O ],
+   [ S, A, K, X, N ],
+   [ L, B, Z, M, E ],
+   [ P, E, L, M, E ],
+   [ O, P, L, S, T ]]
+
+Extra Credit:
+Assuming Dictionary.isWord is O(1), please analyze the runtime of your solution.  Can you improve on it?

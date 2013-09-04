@@ -1,0 +1,7 @@
+Given a string of random characters, write code that will find the longest palendrome.
+
+Example input:
+  GHDUFNEICJSODLFJGHFYDNDJSKDNCHFGEJDBDJEGFHCNDKYATRSMZPLOBSRQNSB
+
+Extra credit:
+Please analyze the runtime of your solution. Can you improve on it?
