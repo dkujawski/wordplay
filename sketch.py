@@ -6,13 +6,15 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 #
+class PalindromeException(Exception):
+	pass
 
-def isPalendrome(str_text):
+def isPalindrome(str_text):
 	n = len(str_text)
 	if n <= 0:
 		# is an empty string a palendrome?
 		# TODO, raise exception here instead of return False
-		return False
+		raise PalindromeException("Empty string.")
 	# integer division handles odd len strings leaving the middle letter out
 	key = n/2
 	logger.info(key)
@@ -31,8 +33,8 @@ if __name__ == "__main__":
 	logger.addHandler(ch)
 
 	logger.info("this is a test harness.")
-	print isPalendrome("ABBA")
-	print isPalendrome("CDC")
-	print isPalendrome("DAVE")
+	print isPalindrome("ABBA")
+	print isPalindrome("CDC")
+	print isPalindrome("DAVE")
 	
 
