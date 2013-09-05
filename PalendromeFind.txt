@@ -32,5 +32,10 @@ notice that you don't start recognizing the palendrome until the mirror starts
 idea: to start in the middle of the string and work your way towards the ends
 idea: start with len of string, decrement and shift the sub string across the entire string.
 
+idea: why not just reverse the entire string and compare it against itself... for large strings this would mean double memory? splitting the string first means less ops in the reverse?
+
+if the string is too large to fit in memory, we could build a hash of the chars as they are read off disk then compare the hashes.
+
+
 
 
