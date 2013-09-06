@@ -36,6 +36,9 @@ idea: why not just reverse the entire string and compare it against itself... fo
 
 if the string is too large to fit in memory, we could build a hash of the chars as they are read off disk then compare the hashes.
 
+how should multiples be handled?
+do we always just return the first largest or should we continue checking for others of the same size?
+
 
 
 
