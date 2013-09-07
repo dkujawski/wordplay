@@ -125,4 +125,16 @@ if __name__ == "__main__":
 				  [ 'O', 'P', 'L', 'S', 'T' ]]
 	
 	#print findNeighbors((2,2), tmp_values)
-	print walkTheSet(tmp_values)
+	#print walkTheSet(tmp_values)
+
+	import dictionary
+	import locate
+	import locate2d
+
+	dictionary.loadDict()
+	foundWords = list()
+	results = locate2d.walkTheSet(tmp_values)
+	for str_text in results:
+		foundWords.append(locate.findLargest(str_text, dictionary.isWord))
+
+	print foundWords
