@@ -12,6 +12,11 @@ class Resident(object):
 			results.append(trail)
 
 def findNeighbors(cell, array_2d, visited):
+	""" for the given starting location :cell: collect adjacent cells
+	from the :array_2d:. 	
+
+	TODO: any reason why this isn't part of the Resident class?
+	"""
 	(x, y) = cell.address
 	visited.add(cell.address)
 	def _tryToAppendValue(_pos):
@@ -20,6 +25,10 @@ def findNeighbors(cell, array_2d, visited):
 		if _x < 0 or _y < 0:
 			return
 		# walk back through parents.
+		"""	TODO: revisit the use of the :visited: list... feels like there is a
+		bug in there that needs to be confirmed.  The visited list needs to be
+		reset for each traversal?
+		"""		
 		if _pos in visited:
 			# exclude any neighbors that are already in attendance
 			return
@@ -28,8 +37,12 @@ def findNeighbors(cell, array_2d, visited):
 		except IndexError as ie:
 			# pass on any values outside of array bounds.
 			return
-		n = findNeighbors(Resident(value, (_x, _y), cell.address), array_2d, visited)
+		n = findNeighbors(Resident(value, (_x, _y)), array_2d, visited)
 		cell.neighbors.append(n)
+	
+	""" This is a brute force approach to digging out neighbors 
+	Would be nice to implement a more elegant algorythm here.
+	"""
 	# get horiz neighbors
 	_tryToAppendValue((x-1, y))
 	_tryToAppendValue((x+1, y))
