@@ -39,6 +39,8 @@ if the string is too large to fit in memory, we could build a hash of the chars 
 how should multiples be handled?
 do we always just return the first largest or should we continue checking for others of the same size?
 
+profile:
+how many slots will need to be evaluated for each test string?
 
 
 
