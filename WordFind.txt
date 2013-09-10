@@ -15,3 +15,21 @@ Example input:
 
 Extra Credit:
 Assuming Dictionary.isWord is O(1), please analyze the runtime of your solution.  Can you improve on it?
+
+
+
+Notes
+-------
+This one took me a bit longer to settle on a strategy.  I decided to first traverse the set building out a list of chars of possible options for each character.  This gives me a list of strings that I can then use similar logic from the palindrome excersize but looking for dictionary words instead.
+
+My first challenge was to figure out an algorithm to identify neighbors for each letter across the 2d array.  Then I need to represent that traversal as a graph structure that can be evaluated to concatonate the letters into string sets which can then be searched for words.  This turned out to be a simple n-tree.
+
+My first implementation is a pretty bruteforce approach especially in how the neighbors are identified.  There is most definitely a more elegant solution for traversing unique paths through a matrix.  
+
+The goal of this implementation is to get the largest possible word from starting from each letter in the set.  For each letter, every possible path is found, some examples from the Example input would be:
+
+MXDNKZLLPEBATISLPO
+MXDNKZLLSMEENO
+MXDNKZLLSMET
+
+There is obvious opportunity here to only search the common paths once
