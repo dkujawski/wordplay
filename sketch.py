@@ -134,6 +134,8 @@ if __name__ == "__main__":
 	dictionary.loadDict()
 	foundWords = list()
 	results = locate2d.walkTheSet(tmp_values)
+	print "\n".join(results)
+	print
 	for str_text in results:
 		foundWords.append(locate.findLargest(str_text, dictionary.isWord))
 
