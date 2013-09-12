@@ -41,19 +41,19 @@ def findNeighbors(cell, array_2d):
 	(x, y) = cell.address
 	history = cell.getHistory()
 	def _tryToAppendValue(_pos):
+		if _pos in history:
+			# exclude any neighbors that are already in attendence
+			return
 		_x, _y = _pos
 		# pass on neg values as being outside array bounds
 		if _x < 0 or _y < 0:
-			return
-		# walk back through parents.
-		if _pos in history:
-			# exclude any neighbors that are already in attendence
 			return
 		try:
 			value = array_2d[_x][_y]
 		except IndexError as ie:
 			# pass on any values outside of array bounds.
 			return
+		# walk back through parents.
 		n = findNeighbors(Resident(value, (_x, _y), cell), array_2d)
 		cell.neighbors.append(n)
 	
