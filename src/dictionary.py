@@ -19,7 +19,7 @@ def loadDict():
 	#print "loaded words:", len(WORDS_SET)
 
 def isWord(str_text):
-	return str_text.upper() in WORDS_SET
+	return str_text in WORDS_SET
 
 def browseWords(str_text):
 	for word in WORDS_SET:
