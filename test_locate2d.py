@@ -137,4 +137,30 @@ def test_locate2d_walkTheSet_01():
 				'CDBA','CDAB','CBDA','CBAD','DBAC','DBCA','DCAB',
 				'DCBA','DACB','DABC']
 	assert_equal( results, expected )
+
+
+array_2d_1x3_car = [['C', 'A', 'R'],]
+
+def test_locate2d_walkTheSet_02():
+	results = locate2d.walkTheSet(array_2d_1x3_car)
+	expected = ['CAR', 'AC', 'AR', 'RAC']
+	assert_equal( results, expected )
+
+def test_locate2d_findLargerWords_01():
+	results = locate2d.findLargerWords(array_2d_1x3_car)
+	expected = ['CAR']
+	assert_equal( results, expected )
 	
+array_2d_3x1_car = [['C'],
+					['A'],
+					['R'],]
+
+def test_locate2d_walkTheSet_03():
+	results = locate2d.walkTheSet(array_2d_3x1_car)
+	expected = ['CAR', 'AC', 'AR', 'RAC']
+	assert_equal( results, expected )
+
+def test_locate2d_findLargerWords_02():
+	results = locate2d.findLargerWords(array_2d_3x1_car)
+	expected = ['CAR']
+	assert_equal( results, expected )
