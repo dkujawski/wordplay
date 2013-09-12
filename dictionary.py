@@ -25,5 +25,7 @@ def browseWords(str_text):
 	for word in WORDS_SET:
 		if word.startswith(str_text.upper()):
 			print word
+
 # load it up on import
+# this can be controversial.. choose your imports wisely.
 loadDict()
