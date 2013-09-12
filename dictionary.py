@@ -5,12 +5,18 @@ WORDS_SET = set()
 def loadDict():
 	global WORDS_SET
 	WORDS_SET = set()
-	with open(WORDS_FILE, 'r') as fh:
-		line = fh.readline()
-		while line:
-			WORDS_SET.add(line.upper().strip())
+	try:
+		with open(WORDS_FILE, 'r') as fh:
 			line = fh.readline()
-	print "loaded words:", len(WORDS_SET)
+			while line:
+				WORDS_SET.add(line.upper().strip())
+				line = fh.readline()
+	except IOError as ioe:
+		print ioe
+		print "Unable to locate the words file on your system: %s" % (WORDS_FILE,)
+		print "Please update the %s module to use the appropriate path for your system." % (__file__,)
+	# debug --
+	#print "loaded words:", len(WORDS_SET)
 
 def isWord(str_text):
 	return str_text.upper() in WORDS_SET
@@ -19,3 +25,5 @@ def browseWords(str_text):
 	for word in WORDS_SET:
 		if word.startswith(str_text.upper()):
 			print word
+# load it up on import
+loadDict()
