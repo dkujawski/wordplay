@@ -9,11 +9,12 @@ class Resident(object):
 		""" walk the tree building a string characters from each 
 		value.
 		"""
-		#TODO: make this a list to join instead of +=
+		#TODO: make this a list to join instead of += ??
 		trail += self.value
 		history = self.getHistory()
 		for neighbor in self.neighbors:
 			if neighbor.address in history:
+				# we have been here before
 				results.append(trail)
 				continue
 			# recurse for all neighbors
@@ -38,17 +39,14 @@ def findNeighbors(cell, array_2d):
 	TODO: any reason why this isn't part of the Resident class?
 	"""
 	(x, y) = cell.address
+	history = cell.getHistory()
 	def _tryToAppendValue(_pos):
 		_x, _y = _pos
 		# pass on neg values as being outside array bounds
 		if _x < 0 or _y < 0:
 			return
 		# walk back through parents.
-		"""	TODO: revisit the use of the :visited: list... feels like there is a
-		bug in there that needs to be confirmed.  The visited list needs to be
-		reset for each traversal?
-		"""		
-		if _pos in cell.getHistory():
+		if _pos in history:
 			# exclude any neighbors that are already in attendence
 			return
 		try:
@@ -60,12 +58,12 @@ def findNeighbors(cell, array_2d):
 		cell.neighbors.append(n)
 	
 	""" This is a brute force approach to digging out neighbors 
-	Would be nice to implement a more elegant algorythm here.
+	Would be nice to implement a more elegant algorithm here.
 	"""
-	# get horiz neighbors
+	# get vert neighbors
 	_tryToAppendValue((x-1, y))
 	_tryToAppendValue((x+1, y))
-	# get vert neighbors
+	# get horiz neighbors
 	_tryToAppendValue((x, y-1))
 	_tryToAppendValue((x, y+1))
 	# get diags
@@ -81,8 +79,29 @@ def walkTheSet(array_2d):
 	"""
 	results = list()
 	for x, x_val in enumerate(array_2d):
-		for y, y_val in enumerate(x_val):
+		for y, _ in enumerate(x_val):
 			# recursively dig to build the graph
 			cell = findNeighbors(Resident(array_2d[x][y], (x,y)), array_2d)
 			cell.traverse(results)
+	return results
+
+def findLargerWords(array_2d, min_len=3):
+	""" generate list of larger words with 3 chars or more found in the set
+	"""
+	import dictionary # load up the dictionary
+	import locate
+	results = list()
+	for x, x_val in enumerate(array_2d):
+		for y, _ in enumerate(x_val):
+			# recursively dig to build the graph
+			cell = findNeighbors(Resident(array_2d[x][y], (x,y)), array_2d)
+			strings = list()
+			cell.traverse(strings)
+			while strings:
+				trail = strings.pop()
+				# locate the largest dictionary word at least min_len 
+				# in each trail
+				found = locate.findLargest(trail, dictionary.isWord)
+				if found and len(found) >= min_len:
+					results.append(found)
 	return results
