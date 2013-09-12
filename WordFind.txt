@@ -33,3 +33,6 @@ MXDNKZLLSMEENO
 MXDNKZLLSMET
 
 There is obvious opportunity here to only search the common paths once
+
+improve...
+use the locations as a key to elimitate the need to search from other areas of the set.
