@@ -2,14 +2,16 @@
 WORDS_FILE="/usr/share/dict/words"
 WORDS_SET = set()
 
-def loadDict():
+def loadDict(min_len=1):
 	global WORDS_SET
 	WORDS_SET = set()
 	try:
 		with open(WORDS_FILE, 'r') as fh:
 			line = fh.readline()
 			while line:
-				WORDS_SET.add(line.upper().strip())
+				w = line.strip()
+				if len(w) >= min_len:
+					WORDS_SET.add(w.upper())
 				line = fh.readline()
 	except IOError as ioe:
 		print ioe
