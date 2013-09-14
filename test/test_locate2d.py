@@ -1,5 +1,4 @@
 from nose.tools import *
-
 import locate2d
 
 array_2d_3x3 = [['A', 'B', 'C'],
@@ -65,8 +64,7 @@ def test_Resident_traverse_01():
 	c = locate2d.Resident('C', (1,0), b)
 	a.neighbors.append(b)
 	b.neighbors.append(c)
-	results = list()
-	a.traverse(results)
+	results = a.traverse()
 	assert_equal( results, ['ABC'] )
 
 def test_Resident_traverse_02():
@@ -75,8 +73,7 @@ def test_Resident_traverse_02():
 	c = locate2d.Resident('C', (1,0), a)
 	a.neighbors.append(b)
 	a.neighbors.append(c)
-	results = list()
-	a.traverse(results)
+	results = a.traverse()
 	assert_equal( results, ['AB', 'AC'] )	
 
 def test_Resident_traverse_03():
@@ -87,8 +84,7 @@ def test_Resident_traverse_03():
 	a.neighbors.append(b)
 	a.neighbors.append(c)
 	b.neighbors.append(d)
-	results = list()
-	a.traverse(results)
+	results = a.traverse()
 	assert_equal( results, ['ABD', 'AC'] )		
 
 def test_Resident_traverse_loop_01():
@@ -100,8 +96,7 @@ def test_Resident_traverse_loop_01():
 	a.neighbors.append(c)
 	b.neighbors.append(d)
 	d.neighbors.append(a)
-	results = list()
-	a.traverse(results)
+	results = a.traverse()
 	assert_equal( results, ['ABD', 'AC'] )
 
 # ----
@@ -112,7 +107,9 @@ def test_Resident_getHistory_01():
 	c = locate2d.Resident('C', (1,0), b)
 	a.neighbors.append(b)
 	b.neighbors.append(c)
-	assert_equal( c.getHistory(), set([(0,0),(0,1)]) )
+	expected = {(0,0):a,
+				(0,1):b}
+	assert_equal( c.getHistory(), expected )
 
 def test_Resident_getHistory_loop_01():
 	a = locate2d.Resident('A', (0,0))
@@ -123,7 +120,10 @@ def test_Resident_getHistory_loop_01():
 	a.neighbors.append(b)
 	b.neighbors.append(c)
 	c.neighbors.append(d)
-	assert_equal( d.getHistory(), set([(0,0),(0,1),(1,0)]) )
+	expected = {(0,0):a,
+				(0,1):b,
+				(1,0):c}
+	assert_equal( d.getHistory(), expected )
 
 # ---
 
@@ -132,10 +132,11 @@ array_2d_2x2 = [['A', 'B'],
 
 def test_locate2d_walkTheSet_01():
 	results = locate2d.walkTheSet(array_2d_2x2)
-	expected = ['ACDB','ACBD','ABDC','ABCD','ADBC','ADCB','BDCA',
-				'BDAC','BACD','BADC','BCAD','BCDA','CABD','CADB',
-				'CDBA','CDAB','CBDA','CBAD','DBAC','DBCA','DCAB',
-				'DCBA','DACB','DABC']
+	expected = ['ACDB','ACBD','ABDC','ABCD','ADBC','ADCB',
+				'CABD','CADB','CDBA','CDAB','CBDA','CBAD',
+				'DBAC','DBCA','DCAB','DCBA','DACB','DABC',
+				'BDCA','BDAC','BACD','BADC','BCAD','BCDA']
+	print results
 	assert_equal( results, expected )
 
 
@@ -164,3 +165,27 @@ def test_locate2d_findLargerWords_02():
 	results = locate2d.findLargerWords(array_2d_3x1_car)
 	expected = ['CAR']
 	assert_equal( results, expected )
+
+array_2d_3x3_car = [['1','C','3'],
+					['4','A','5'],
+					['6','R','7'],]
+
+def test_locate2d_findLargerWords_02():
+	return
+	results = locate2d.findLargerWords(array_2d_3x3_car)
+	expected = ['CAR']
+	assert_equal( results, expected )
+
+
+if __name__ == "__main__":
+    import os
+    import sys
+    # find the src dir and add it to the sys.path
+    src = os.path.join(os.path.join(os.path.dirname(__file__), "../"), "src")
+    sys.path.append(os.path.abspath(src))
+
+    import locate
+    import locate2d
+    import palindrome
+
+    test_locate2d_walkTheSet_03()
