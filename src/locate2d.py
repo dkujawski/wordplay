@@ -1,3 +1,7 @@
+
+# http://www.skymind.com/~ocrow/python_string/
+from cStringIO import StringIO
+
 class Resident(object):
 	def __init__(self, value, address, prev=None):
 		self.prev = prev
@@ -5,32 +9,63 @@ class Resident(object):
 		self.address = address
 		self.neighbors = list()
 	
-	def traverse(self, results, trail=""):
+	def traverse(self, func=None, results=None, trail="", history=None):
 		""" walk the tree building a string characters from each 
 		value.
 		"""
-		#TODO: make this a list to join instead of += ??
+		if not results:
+			results = list()
+		if not history:
+			history = list()
+		history.append(self.address)
+
+		# http://www.skymind.com/~ocrow/python_string/
 		trail += self.value
-		history = self.getHistory()
+		
+		#print "\t", self.value, trail, [n.value for n in self.neighbors], [h for h in history]
 		for neighbor in self.neighbors:
 			if neighbor.address in history:
-				# we have been here before
-				results.append(trail)
+				#results.append(trail)
+				#print "\t  -skipping:", neighbor.value
 				continue
 			# recurse for all neighbors
-			neighbor.traverse(results, trail)
+			#print "\t  ", neighbor.value, "->", results
+			results = neighbor.traverse(func, results, trail, list(history))
+			# print "\t  ", results
 		# when we hit a leaf node set the string
-		if len(self.neighbors) == 0:
-			results.append(trail)
+		if self.address == history[-1] and \
+		   (not results or not results[-1].startswith(trail)):
+			if func is None:
+				# add all trails to results
+				results.append(trail)
+			elif func(trail):
+				# only add trails that provide a true return value
+				#print "\t", func.__name__, trail
+				results.append(trail)
+		return results
+
+	def walk(self, func=None, history=None):		
+		if not history:
+			history = set()
+		history.add(self.address)
+		#print self.value, history
+		results = self.traverse(func)
+		for neighbor in self.neighbors:
+			if neighbor.address in history:
+				continue
+			results.extend(neighbor.walk(func, history))
+		return results
 
 	def getHistory(self):
-		history = set()
+		history = dict()
 		cell = self.prev
-		while cell and (cell.address not in history and 
+		while cell and (cell not in history and 
 						cell.address != self.address):
-			history.add(cell.address)
+			history[cell.address] = cell
 			cell = cell.prev			
 		return history
+
+
 
 def findNeighbors(cell, array_2d):
 	""" for the given starting location :cell: collect adjacent cells
@@ -41,11 +76,12 @@ def findNeighbors(cell, array_2d):
 	(x, y) = cell.address
 	history = cell.getHistory()
 	def _tryToAppendValue(_pos):
-		if _pos in history:
-			# exclude any neighbors that are already in attendence
-			return
 		_x, _y = _pos
-		# pass on neg values as being outside array bounds
+		if _pos in history:
+			# include neighnbors in history but don't recurse
+			cell.neighbors.append(history[_pos])
+			return
+		# ignore neg values as being outside array bounds
 		if _x < 0 or _y < 0:
 			return
 		try:
@@ -53,9 +89,9 @@ def findNeighbors(cell, array_2d):
 		except IndexError as ie:
 			# pass on any values outside of array bounds.
 			return
-		# walk back through parents.
-		n = findNeighbors(Resident(value, (_x, _y), cell), array_2d)
+		n = findNeighbors(Resident(value, _pos, cell), array_2d)
 		cell.neighbors.append(n)
+		
 	
 	""" This is a brute force approach to digging out neighbors 
 	Would be nice to implement a more elegant algorithm here.
@@ -77,31 +113,18 @@ def findNeighbors(cell, array_2d):
 def walkTheSet(array_2d):
 	""" generate list of traversals
 	"""
-	results = list()
-	for x, x_val in enumerate(array_2d):
-		for y, _ in enumerate(x_val):
-			# recursively dig to build the graph
-			cell = findNeighbors(Resident(array_2d[x][y], (x,y)), array_2d)
-			cell.traverse(results)
-	return results
+	value = array_2d[0][0]
+	address = (0,0)
+	cell = findNeighbors(Resident(value, address), array_2d)
+	return cell.walk()
 
 def findLargerWords(array_2d, min_len=3):
 	""" generate list of larger words with 3 chars or more found in the set
 	"""
 	import dictionary # load up the dictionary
-	import locate
-	results = list()
-	for x, x_val in enumerate(array_2d):
-		for y, _ in enumerate(x_val):
-			# recursively dig to build the graph
-			cell = findNeighbors(Resident(array_2d[x][y], (x,y)), array_2d)
-			strings = list()
-			cell.traverse(strings)
-			while strings:
-				trail = strings.pop()
-				# locate the largest dictionary word at least min_len 
-				# in each trail
-				found = locate.findLargest(trail, dictionary.isWord)
-				if found and len(found) >= min_len:
-					results.append(found)
-	return results
+	dictionary.loadDict(min_len)
+
+	value = array_2d[0][0]
+	address = (0,0)
+	cell = findNeighbors(Resident(value, address), array_2d)
+	return cell.walk(func=dictionary.isWord)
