@@ -1,6 +1,6 @@
 
 # http://www.skymind.com/~ocrow/python_string/
-from cStringIO import StringIO
+#from cStringIO import StringIO
 
 class Resident(object):
 	def __init__(self, value, address, prev=None):
@@ -9,39 +9,41 @@ class Resident(object):
 		self.address = address
 		self.neighbors = list()
 	
-	def traverse(self, func=None, results=None, trail="", history=None):
+	def traverse(self, func=None, results=None, trail=None, history=None):
 		""" walk the tree building a string characters from each 
 		value.
 		"""
-		if not results:
+		if results is None:
 			results = list()
-		if not history:
+
+		if history is None:
 			history = list()
 		history.append(self.address)
 
-		# http://www.skymind.com/~ocrow/python_string/
-		trail += self.value
+		if trail is None:
+			trail = list()
+		trail.append(self.value)
 		
 		#print "\t", self.value, trail, [n.value for n in self.neighbors], [h for h in history]
 		for neighbor in self.neighbors:
 			if neighbor.address in history:
-				#results.append(trail)
 				#print "\t  -skipping:", neighbor.value
 				continue
 			# recurse for all neighbors
 			#print "\t  ", neighbor.value, "->", results
-			results = neighbor.traverse(func, results, trail, list(history))
+			results = neighbor.traverse(func, results, list(trail), list(history))			
 			# print "\t  ", results
 		# when we hit a leaf node set the string
+		trail_str = ''.join(trail)
 		if self.address == history[-1] and \
-		   (not results or not results[-1].startswith(trail)):
+		   (not results or not results[-1].startswith(trail_str)):
 			if func is None:
 				# add all trails to results
-				results.append(trail)
-			elif func(trail):
+				results.append(trail_str)
+			elif func(trail_str):
 				# only add trails that provide a true return value
 				#print "\t", func.__name__, trail
-				results.append(trail)
+				results.append(trail_str)
 		return results
 
 	def walk(self, func=None, history=None):		
