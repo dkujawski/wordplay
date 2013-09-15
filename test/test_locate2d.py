@@ -171,7 +171,6 @@ array_2d_3x3_car = [['1','C','3'],
 					['6','R','7'],]
 
 def test_locate2d_findLargerWords_02():
-	return
 	results = locate2d.findLargerWords(array_2d_3x3_car)
 	expected = ['CAR']
 	assert_equal( results, expected )
