@@ -46,16 +46,6 @@ class Resident(object):
 			results.extend(neighbor.walk(func, history))
 		return results
 
-	def getHistory(self):
-		history = dict()
-		cell = self.prev
-		while cell and (cell not in history and 
-						cell.address != self.address):
-			history[cell.address] = cell
-			cell = cell.prev			
-		return history
-
-
 def build_graph(array_2d, pos=(0,0), nodes=None):
 	if nodes is None:
 		nodes = dict()

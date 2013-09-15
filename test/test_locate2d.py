@@ -81,32 +81,6 @@ def test_Resident_traverse_loop_01():
 
 # ----
 
-def test_Resident_getHistory_01():
-	a = locate2d.Resident('A', (0,0))
-	b = locate2d.Resident('B', (0,1), a)
-	c = locate2d.Resident('C', (1,0), b)
-	a.neighbors.append(b)
-	b.neighbors.append(c)
-	expected = {(0,0):a,
-				(0,1):b}
-	assert_equal( c.getHistory(), expected )
-
-def test_Resident_getHistory_loop_01():
-	a = locate2d.Resident('A', (0,0))
-	b = locate2d.Resident('B', (0,1), a)
-	c = locate2d.Resident('C', (1,0), b)
-	d = locate2d.Resident('D', (1,1), c)
-	a.prev = d
-	a.neighbors.append(b)
-	b.neighbors.append(c)
-	c.neighbors.append(d)
-	expected = {(0,0):a,
-				(0,1):b,
-				(1,0):c}
-	assert_equal( d.getHistory(), expected )
-
-# ---
-
 array_2d_2x2 = [['A', 'B'],
 				['C', 'D']]
 
