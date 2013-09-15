@@ -1,5 +1,18 @@
+"""
+.. sectionauthor:: Dave Kujawski
+
+Node class used to construct a graph of a 2d array where each element has edges
+connecting it to each adjacent element.
+
+* :class:`Node`: Node used to constructing a graph stucture.
+
+"""
 
 class Node(object):
+	"""
+	This is a simple node class used for constructing a graph or tree data 
+	structure.
+	"""
 	def __init__(self, value, address):
 		self.value = value
 		self.address = address
@@ -32,16 +45,4 @@ class Node(object):
 				# add all trails to results
 				results_ref.append(trail_str)
 		return results_ref
-
-	def walk(self, func=None, history=None):		
-		if not history:
-			history = set()
-		history.add(self.address)
-		#print self.value, history
-		results = self.traverse(func)
-		for neighbor in self.neighbors:
-			if neighbor.address in history:
-				continue
-			results.extend(neighbor.walk(func, history))
-		return results
 
