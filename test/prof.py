@@ -5,7 +5,7 @@ def generate_large_random_string(str_len=1024):
     import random    
     return ''.join(random.choice(string.ascii_uppercase) for i in xrange(str_len))
 
-def generate_2d_array(a_size=3):
+def generate_2d_array(a_size=4):
     import string
     import random
     a = list()
@@ -66,5 +66,5 @@ if __name__ == "__main__":
     import palindrome
 
     #prof_findLargest_01()
-    #prof_findLargerWords_01()
-    locate2d.findLargerWords(generate_2d_array(2))
+    prof_findLargerWords_01()
+    #locate2d.findLargerWords(generate_2d_array(2))
