@@ -2,13 +2,15 @@
 # http://www.skymind.com/~ocrow/python_string/
 #from cStringIO import StringIO
 
+from profilehooks import profile
+
 class Resident(object):
 	def __init__(self, value, address, prev=None):
 		self.prev = prev
 		self.value = value
 		self.address = address
 		self.neighbors = list()
-	
+
 	def traverse(self, func=None, results=None, trail=None, history=None):
 		""" walk the tree building a string characters from each 
 		value.
@@ -68,6 +70,51 @@ class Resident(object):
 		return history
 
 
+def build_graph(array_2d, pos=(0,0), nodes=None):
+	if nodes is None:
+		nodes = dict()
+	x,y = pos
+	if pos in nodes:
+		node = nodes[pos]
+	else:
+		value = array_2d[x][y]
+		node = Resident(value, pos)
+		nodes[pos] = node
+	neighbors = get_neighbors(nodes, array_2d, pos)
+	for neighbor in neighbors:
+		node.neighbors.append(neighbor)
+		if node in neighbor.neighbors:
+			# avoid infinite loops
+			continue
+		else:
+			build_graph(array_2d, neighbor.address, nodes)
+
+def get_neighbors(nodes, array_2d, root_pos):
+	x,y = root_pos	
+	# build address map
+	addresses = ((x-1,y), (x+1,y),
+				 (x,y-1), (x,y+1),
+				 (x+1,y-1), (x+1,y+1),
+				 (x-1,y-1), (x-1,y+1))
+	neighbors = list()
+	for pos in addresses:
+		_x,_y = pos
+		if _x < 0 or _y < 0:
+			# pass on negative coords
+			continue
+		if pos in nodes:
+			node = nodes[pos]
+		else:
+			try:
+				value = array_2d[_x][_y]
+			except IndexError as ie:
+				# pass on any values outside of array bounds.
+				continue
+			node = Resident(value, pos)
+			nodes[pos] = node
+		neighbors.append(node)
+	return neighbors
+
 
 def findNeighbors(cell, array_2d):
 	""" for the given starting location :cell: collect adjacent cells
@@ -79,19 +126,20 @@ def findNeighbors(cell, array_2d):
 	history = cell.getHistory()
 	def _tryToAppendValue(_pos):
 		_x, _y = _pos
-		if _pos in history:
-			# include neighnbors in history but don't recurse
-			cell.neighbors.append(history[_pos])
-			return
 		# ignore neg values as being outside array bounds
 		if _x < 0 or _y < 0:
 			return
-		try:
-			value = array_2d[_x][_y]
-		except IndexError as ie:
-			# pass on any values outside of array bounds.
-			return
-		n = findNeighbors(Resident(value, _pos, cell), array_2d)
+		if _pos in history:
+			# include neighnbors in history but don't recurse
+			n = history[_pos]
+		else:
+			try:
+				value = array_2d[_x][_y]
+			except IndexError as ie:
+				# pass on any values outside of array bounds.
+				return
+			n = Resident(value, _pos, cell)
+		n = findNeighbors(n,        array_2d)
 		cell.neighbors.append(n)
 		
 	
