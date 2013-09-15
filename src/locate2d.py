@@ -1,3 +1,4 @@
+from node import Node
 
 class Resident(object):
 	def __init__(self, value, address, prev=None):
@@ -54,7 +55,7 @@ def build_graph(array_2d, pos=(0,0), nodes=None):
 		node = nodes[pos]
 	else:
 		value = array_2d[x][y]
-		node = Resident(value, pos)
+		node = Node(value, pos)
 		nodes[pos] = node
 	neighbors = get_neighbors(nodes, array_2d, pos)
 	for neighbor in neighbors:
@@ -89,7 +90,7 @@ def get_neighbors(nodes, array_2d, root_pos):
 			except IndexError as ie:
 				# pass on any values outside of array bounds.
 				continue
-			node = Resident(value, pos)
+			node = Node(value, pos)
 			nodes[pos] = node
 		neighbors.append(node)
 	return neighbors
