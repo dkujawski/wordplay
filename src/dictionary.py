@@ -2,7 +2,7 @@
 WORDS_FILE="/usr/share/dict/words"
 WORDS_SET = set()
 
-def loadDict(min_len=1):
+def load_dict(min_len=1):
 	global WORDS_SET
 	WORDS_SET = set()
 	try:
@@ -20,14 +20,11 @@ def loadDict(min_len=1):
 	# debug --
 	#print "loaded words:", len(WORDS_SET)
 
-def isWord(str_text):
+def is_word(str_text):
 	return str_text in WORDS_SET
 
-def browseWords(str_text):
+def browse_words(str_text):
 	for word in WORDS_SET:
 		if word.startswith(str_text.upper()):
 			print word
 
-# load it up on import
-# this can be controversial.. choose your imports wisely.
-loadDict()
