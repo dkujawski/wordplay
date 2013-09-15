@@ -171,11 +171,16 @@ array_2d_3x3_car = [['1','C','3'],
 					['6','R','7'],]
 
 def test_locate2d_findLargerWords_02():
-	return
 	results = locate2d.findLargerWords(array_2d_3x3_car)
 	expected = ['CAR']
 	assert_equal( results, expected )
 
+def test_locate2d_build_graph_01():
+	nodes = dict()
+	locate2d.build_graph(array_2d_3x1_car, pos=(0,0), nodes=nodes)
+	results = [(pos, nodes[pos].value) for pos in sorted(nodes.keys())]
+	expected = [((0,0),'C'),((1,0),'A'),((2,0),'R')]
+	assert_equal( results, expected )
 
 if __name__ == "__main__":
     import os
