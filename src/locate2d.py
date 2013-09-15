@@ -53,12 +53,12 @@ def find_larger_words(array_2d, min_len=3):
 	""" generate list of larger words with 3 chars or more found in the set
 	"""
 	import dictionary # load up the dictionary
-	dictionary.loadDict(min_len)
+	dictionary.load_dict(min_len)
 
 	nodes = dict()
 	build_graph(array_2d, nodes=nodes)
 	results = list()
 	for pos, node in nodes.items():
-		results.extend(node.traverse(func=dictionary.isWord))
+		results.extend(node.traverse(func=dictionary.is_word))
 	return results
 	

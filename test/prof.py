@@ -22,7 +22,7 @@ def prof_findLargest_01():
     do_profile(cmd_str)
 
 def prof_findLargerWords_01():
-    cmd_str = "locate2d.findLargerWords(generate_2d_array())"
+    cmd_str = "locate2d.find_larger_words(generate_2d_array())"
     do_profile(cmd_str) #, sort_by='pcalls')#, sort_by='time')
 
 # -----------
@@ -67,4 +67,4 @@ if __name__ == "__main__":
 
     #prof_findLargest_01()
     prof_findLargerWords_01()
-    #locate2d.findLargerWords(generate_2d_array(2))
+    #locate2d.find_larger_words(generate_2d_array(2))
