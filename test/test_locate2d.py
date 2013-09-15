@@ -5,29 +5,11 @@ array_2d_3x3 = [['A', 'B', 'C'],
 				['D', 'E', 'F'],
 				['G', 'H', 'I']]
 
-def test_findNeighbors_corner01():
-	n1 = locate2d.Resident("A", (0,0))
-	n2 = locate2d.findNeighbors(n1, array_2d_3x3)
-
-	results = [n2.neighbors[0].value, 
-			   n2.neighbors[1].value, 
-			   n2.neighbors[2].value]
-	assert_equal( results, ['D', 'B', 'E'] )
-
 def test_get_neighbors_corner01():
 	nodes = dict()
 	neighbors = locate2d.get_neighbors(nodes, array_2d_3x3, (0,0))
 	results = [n.value for n in neighbors]
 	assert_equal( results, ['D', 'B', 'E'] )
-
-def test_findNeighbors_corner02():
-	n1 = locate2d.Resident("C", (0,2))
-	n2 = locate2d.findNeighbors(n1, array_2d_3x3)
-	len(n2.neighbors)
-	results = [n2.neighbors[0].value, 
-			   n2.neighbors[1].value, 
-			   n2.neighbors[2].value]
-	assert_equal( results, ['F', 'B', 'E'] )
 
 def test_get_neighbors_corner02():
 	nodes = dict()
@@ -35,50 +17,17 @@ def test_get_neighbors_corner02():
 	results = [n.value for n in neighbors]
 	assert_equal( results, ['F', 'B', 'E'] )
 
-def test_findNeighbors_corner20():
-	n1 = locate2d.Resident("G", (2,0))
-	n2 = locate2d.findNeighbors(n1, array_2d_3x3)
-	len(n2.neighbors)
-	results = [n2.neighbors[0].value, 
-			   n2.neighbors[1].value, 
-			   n2.neighbors[2].value]
-	assert_equal( results, ['D', 'H', 'E'] )
-
 def test_get_neighbors_corner20():
 	nodes = dict()
 	neighbors = locate2d.get_neighbors(nodes, array_2d_3x3, (2,0))
 	results = [n.value for n in neighbors]
 	assert_equal( results, ['D', 'H', 'E'] )
 
-def test_findNeighbors_corner22():
-	n1 = locate2d.Resident("I", (2,2))
-	n2 = locate2d.findNeighbors(n1, array_2d_3x3)
-	len(n2.neighbors)
-	results = [n2.neighbors[0].value, 
-			   n2.neighbors[1].value, 
-			   n2.neighbors[2].value]
-	assert_equal( results, ['F', 'H', 'E'] )
-
 def test_get_neighbors_corner22():
 	nodes = dict()
 	neighbors = locate2d.get_neighbors(nodes, array_2d_3x3, (2,2))
 	results = [n.value for n in neighbors]
 	assert_equal( results, ['F', 'H', 'E'] )
-
-def test_findNeighbors_center():
-	n1 = locate2d.Resident("E", (1,1))
-	n2 = locate2d.findNeighbors(n1, array_2d_3x3)
-	len(n2.neighbors)
-	results = [n2.neighbors[0].value, 
-			   n2.neighbors[1].value, 
-			   n2.neighbors[2].value,
-			   n2.neighbors[3].value,
-			   n2.neighbors[4].value,
-			   n2.neighbors[5].value,
-			   n2.neighbors[6].value,
-			   n2.neighbors[7].value,]
-	expected = ['B', 'H', 'D', 'F', 'G', 'I', 'A', 'C']
-	assert_equal( results, expected )
 
 def test_get_neighbors_center():
 	nodes = dict()
@@ -161,15 +110,6 @@ def test_Resident_getHistory_loop_01():
 array_2d_2x2 = [['A', 'B'],
 				['C', 'D']]
 
-def test_locate2d_walkTheSet_01():
-	results = locate2d.walkTheSet(array_2d_2x2)
-	expected = ['ACDB','ACBD','ABDC','ABCD','ADBC','ADCB',
-				'CABD','CADB','CDBA','CDAB','CBDA','CBAD',
-				'DBAC','DBCA','DCAB','DCBA','DACB','DABC',
-				'BDCA','BDAC','BACD','BADC','BCAD','BCDA']
-	print results
-	assert_equal( results, expected )
-
 def test_locate2d_full_traverse_01():
 	nodes = dict()
 	locate2d.build_graph(array_2d_2x2, nodes=nodes)
@@ -187,11 +127,6 @@ def test_locate2d_full_traverse_01():
 	assert_equal( results, expected )
 
 array_2d_1x3_car = [['C', 'A', 'R'],]
-
-def test_locate2d_walkTheSet_02():
-	results = locate2d.walkTheSet(array_2d_1x3_car)
-	expected = ['CAR', 'AC', 'AR', 'RAC']
-	assert_equal( results, expected )
 
 def test_locate2d_full_traverse_02():
 	nodes = dict()
@@ -212,11 +147,6 @@ def test_locate2d_findLargerWords_01():
 array_2d_3x1_car = [['C'],
 					['A'],
 					['R'],]
-
-def test_locate2d_walkTheSet_03():
-	results = locate2d.walkTheSet(array_2d_3x1_car)
-	expected = ['CAR', 'AC', 'AR', 'RAC']
-	assert_equal( results, expected )
 
 def test_locate2d_full_traverse_03():
 	nodes = dict()

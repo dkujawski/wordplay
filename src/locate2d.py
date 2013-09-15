@@ -105,57 +105,6 @@ def get_neighbors(nodes, array_2d, root_pos):
 	return neighbors
 
 
-def findNeighbors(cell, array_2d):
-	""" for the given starting location :cell: collect adjacent cells
-	from the :array_2d:. 	
-
-	TODO: any reason why this isn't part of the Resident class?
-	"""
-	(x, y) = cell.address
-	history = cell.getHistory()
-	def _tryToAppendValue(_pos):
-		_x, _y = _pos
-		# ignore neg values as being outside array bounds
-		if _x < 0 or _y < 0:
-			return
-		if _pos in history:
-			# include neighnbors in history but don't recurse
-			n = history[_pos]
-		else:
-			try:
-				value = array_2d[_x][_y]
-			except IndexError as ie:
-				# pass on any values outside of array bounds.
-				return
-			n = findNeighbors(Resident(value, _pos, cell), array_2d)
-		cell.neighbors.append(n)
-		
-	
-	""" This is a brute force approach to digging out neighbors 
-	Would be nice to implement a more elegant algorithm here.
-	"""
-	# get vert neighbors
-	_tryToAppendValue((x-1, y))
-	_tryToAppendValue((x+1, y))
-	# get horiz neighbors
-	_tryToAppendValue((x, y-1))
-	_tryToAppendValue((x, y+1))
-	# get diags
-	_tryToAppendValue((x+1, y-1))
-	_tryToAppendValue((x+1, y+1))
-	_tryToAppendValue((x-1, y-1))
-	_tryToAppendValue((x-1, y+1))
-
-	return cell
-
-def walkTheSet(array_2d):
-	""" generate list of traversals
-	"""
-	value = array_2d[0][0]
-	address = (0,0)
-	cell = findNeighbors(Resident(value, address), array_2d)
-	return cell.walk()
-
 def findLargerWords(array_2d, min_len=3):
 	""" generate list of larger words with 3 chars or more found in the set
 	"""
