@@ -28,6 +28,3 @@ def browse_words(str_text):
 		if word.startswith(str_text.upper()):
 			print word
 
-# load it up on import
-# this can be controversial.. choose your imports wisely.
-loadDict()
