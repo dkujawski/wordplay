@@ -68,8 +68,8 @@ def test_locate2d_full_traverse_02():
 	expected = ['CAR', 'AC', 'AR', 'RAC']
 	assert_equal( results, expected )
 
-def test_locate2d_findLargerWords_01():
-	results = locate2d.findLargerWords(array_2d_1x3_car)
+def test_locate2d_find_larger_words_01():
+	results = locate2d.find_larger_words(array_2d_1x3_car)
 	expected = ['CAR']
 	assert_equal( results, expected )
 	
@@ -88,8 +88,8 @@ def test_locate2d_full_traverse_03():
 	expected = ['CAR', 'AC', 'AR', 'RAC']
 	assert_equal( results, expected )
 
-def test_locate2d_findLargerWords_02():
-	results = locate2d.findLargerWords(array_2d_3x1_car)
+def test_locate2d_find_larger_words_02():
+	results = locate2d.find_larger_words(array_2d_3x1_car)
 	expected = ['CAR']
 	assert_equal( results, expected )
 
@@ -97,9 +97,8 @@ array_2d_3x3_car = [['1','C','3'],
 					['4','A','5'],
 					['6','R','7'],]
 
-def test_locate2d_findLargerWords_02():
-	return
-	results = locate2d.findLargerWords(array_2d_3x3_car)
+def test_locate2d_find_larger_words_02():
+	results = locate2d.find_larger_words(array_2d_3x3_car)
 	expected = ['CAR']
 	assert_equal( results, expected )
 

@@ -49,7 +49,7 @@ def get_neighbors(nodes, array_2d, root_pos):
 	return neighbors
 
 
-def findLargerWords(array_2d, min_len=3):
+def find_larger_words(array_2d, min_len=3):
 	""" generate list of larger words with 3 chars or more found in the set
 	"""
 	import dictionary # load up the dictionary
