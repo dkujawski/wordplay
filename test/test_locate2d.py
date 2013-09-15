@@ -36,51 +36,6 @@ def test_get_neighbors_center():
 	expected = ['B', 'H', 'D', 'F', 'G', 'I', 'A', 'C']
 	assert_equal( results, expected )
 
-# ----
-
-def test_Resident_traverse_01():
-	a = locate2d.Resident('A', (0,0))
-	b = locate2d.Resident('B', (0,1), a)
-	c = locate2d.Resident('C', (1,0), b)
-	a.neighbors.append(b)
-	b.neighbors.append(c)
-	results = a.traverse()
-	assert_equal( results, ['ABC'] )
-
-def test_Resident_traverse_02():
-	a = locate2d.Resident('A', (0,0))
-	b = locate2d.Resident('B', (0,1), a)
-	c = locate2d.Resident('C', (1,0), a)
-	a.neighbors.append(b)
-	a.neighbors.append(c)
-	results = a.traverse()
-	assert_equal( results, ['AB', 'AC'] )	
-
-def test_Resident_traverse_03():
-	a = locate2d.Resident('A', (0,0))
-	b = locate2d.Resident('B', (0,1), a)
-	c = locate2d.Resident('C', (1,0), a)
-	d = locate2d.Resident('D', (1,1), b)
-	a.neighbors.append(b)
-	a.neighbors.append(c)
-	b.neighbors.append(d)
-	results = a.traverse()
-	assert_equal( results, ['ABD', 'AC'] )		
-
-def test_Resident_traverse_loop_01():
-	a = locate2d.Resident('A', (0,0))
-	b = locate2d.Resident('B', (0,1), a)
-	c = locate2d.Resident('C', (1,0), a)
-	d = locate2d.Resident('D', (1,1), b)
-	a.neighbors.append(b)
-	a.neighbors.append(c)
-	b.neighbors.append(d)
-	d.neighbors.append(a)
-	results = a.traverse()
-	assert_equal( results, ['ABD', 'AC'] )
-
-# ----
-
 array_2d_2x2 = [['A', 'B'],
 				['C', 'D']]
 
