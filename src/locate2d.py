@@ -174,7 +174,16 @@ def findLargerWords(array_2d, min_len=3):
 	import dictionary # load up the dictionary
 	dictionary.loadDict(min_len)
 
+	nodes = dict()
+	build_graph(array_2d, nodes=nodes)
+	results = list()
+	for pos, node in nodes.items():
+		results.extend(node.traverse(func=dictionary.isWord))
+	return results
+
 	value = array_2d[0][0]
 	address = (0,0)
 	cell = findNeighbors(Resident(value, address), array_2d)
 	return cell.walk(func=dictionary.isWord)
+
+	

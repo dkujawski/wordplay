@@ -66,4 +66,5 @@ if __name__ == "__main__":
     import palindrome
 
     #prof_findLargest_01()
-    prof_findLargerWords_01()
+    #prof_findLargerWords_01()
+    locate2d.findLargerWords(generate_2d_array(2))
