@@ -113,15 +113,33 @@ def get_neighbors(nodes, array_2d, root_pos):
 
 
 def find_larger_words(array_2d, min_len=3):
-	""" generate list of larger words with 3 chars or more found in the set
-	"""
-	import dictionary # load up the dictionary
-	dictionary.load_dict(min_len)
+	""" 
+	This is the main entry point into what could be a game.  This will build up
+	a word list using :module:`dictionary` and search through all possible
+	string combinations in :param:`array_2d` and return a list of all words of
+	at least :param:`min_len` in length.
 
+	:param array_2d: This is the set of letters in the form of a 2 dimensional
+		array, or list of lists of the form::
+
+				array_2d = [['A','B','C'],
+							['D','E','F'],
+							['G','H','I'],]
+	:param min_len: Minimum lenghth of words set in the word list built by 
+		:module:`dictionary`
+	:returns: list of words found.
+
+	"""
+	import dictionary 
+	# load up the dictionary
+	dictionary.load_dict(min_len)
+	# initialize nodes dict, passed as ref into the graph builder
 	nodes = dict()
 	build_graph(array_2d, nodes=nodes)
+
 	results = list()
 	for pos, node in nodes.items():
+		# traverse each node collecting the words as they are found
 		results.extend(node.traverse(func=dictionary.is_word))
 	return results
 	
