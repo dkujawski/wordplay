@@ -1,7 +1,6 @@
 
 class Node(object):
-	def __init__(self, value, address, prev=None):
-		self.prev = prev
+	def __init__(self, value, address):
 		self.value = value
 		self.address = address
 		self.neighbors = list()

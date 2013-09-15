@@ -4,8 +4,8 @@ import node
 
 def test_Node_traverse_01():
 	a = node.Node('A', (0,0))
-	b = node.Node('B', (0,1), a)
-	c = node.Node('C', (1,0), b)
+	b = node.Node('B', (0,1))
+	c = node.Node('C', (1,0))
 	a.neighbors.append(b)
 	b.neighbors.append(c)
 	results = a.traverse()
@@ -13,8 +13,8 @@ def test_Node_traverse_01():
 
 def test_Node_traverse_02():
 	a = node.Node('A', (0,0))
-	b = node.Node('B', (0,1), a)
-	c = node.Node('C', (1,0), a)
+	b = node.Node('B', (0,1))
+	c = node.Node('C', (1,0))
 	a.neighbors.append(b)
 	a.neighbors.append(c)
 	results = a.traverse()
@@ -22,9 +22,9 @@ def test_Node_traverse_02():
 
 def test_Node_traverse_03():
 	a = node.Node('A', (0,0))
-	b = node.Node('B', (0,1), a)
-	c = node.Node('C', (1,0), a)
-	d = node.Node('D', (1,1), b)
+	b = node.Node('B', (0,1))
+	c = node.Node('C', (1,0))
+	d = node.Node('D', (1,1))
 	a.neighbors.append(b)
 	a.neighbors.append(c)
 	b.neighbors.append(d)
@@ -33,9 +33,9 @@ def test_Node_traverse_03():
 
 def test_Node_traverse_loop_01():
 	a = node.Node('A', (0,0))
-	b = node.Node('B', (0,1), a)
-	c = node.Node('C', (1,0), a)
-	d = node.Node('D', (1,1), b)
+	b = node.Node('B', (0,1))
+	c = node.Node('C', (1,0))
+	d = node.Node('D', (1,1))
 	a.neighbors.append(b)
 	a.neighbors.append(c)
 	b.neighbors.append(d)
