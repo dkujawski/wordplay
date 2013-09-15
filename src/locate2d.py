@@ -1,9 +1,4 @@
 
-# http://www.skymind.com/~ocrow/python_string/
-#from cStringIO import StringIO
-
-from profilehooks import profile
-
 class Resident(object):
 	def __init__(self, value, address, prev=None):
 		self.prev = prev
@@ -11,12 +6,12 @@ class Resident(object):
 		self.address = address
 		self.neighbors = list()
 
-	def traverse(self, func=None, results=None, trail=None, history=None):
+	def traverse(self, func=None, results_ref=None, trail=None, history=None):
 		""" walk the tree building a string characters from each 
 		value.
 		"""
-		if results is None:
-			results = list()
+		if results_ref is None:
+			results_ref = list()
 
 		if history is None:
 			history = list()
@@ -26,27 +21,18 @@ class Resident(object):
 			trail = list()
 		trail.append(self.value)
 		
-		#print "\t", self.value, trail, [n.value for n in self.neighbors], [h for h in history]
 		for neighbor in self.neighbors:
 			if neighbor.address in history:
-				#print "\t  -skipping:", neighbor.value
 				continue
 			# recurse for all neighbors
-			#print "\t  ", neighbor.value, "->", results
-			results = neighbor.traverse(func, results, list(trail), list(history))			
-			# print "\t  ", results
-		# when we hit a leaf node set the string
+			results_ref = neighbor.traverse(func, results_ref, 
+											list(trail), list(history))
 		trail_str = ''.join(trail)
-		if self.address == history[-1] and \
-		   (not results or not results[-1].startswith(trail_str)):
-			if func is None:
+	   	if not results_ref or not results_ref[-1].startswith(trail_str):
+			if func is None or func(trail_str):
 				# add all trails to results
-				results.append(trail_str)
-			elif func(trail_str):
-				# only add trails that provide a true return value
-				#print "\t", func.__name__, trail
-				results.append(trail_str)
-		return results
+				results_ref.append(trail_str)
+		return results_ref
 
 	def walk(self, func=None, history=None):		
 		if not history:
@@ -82,6 +68,9 @@ def build_graph(array_2d, pos=(0,0), nodes=None):
 		nodes[pos] = node
 	neighbors = get_neighbors(nodes, array_2d, pos)
 	for neighbor in neighbors:
+		if neighbor in node.neighbors:
+			# we have already have this neighbor
+			continue
 		node.neighbors.append(neighbor)
 		if node in neighbor.neighbors:
 			# avoid infinite loops
@@ -138,8 +127,7 @@ def findNeighbors(cell, array_2d):
 			except IndexError as ie:
 				# pass on any values outside of array bounds.
 				return
-			n = Resident(value, _pos, cell)
-		n = findNeighbors(n,        array_2d)
+			n = findNeighbors(Resident(value, _pos, cell), array_2d)
 		cell.neighbors.append(n)
 		
 	
@@ -180,10 +168,4 @@ def findLargerWords(array_2d, min_len=3):
 	for pos, node in nodes.items():
 		results.extend(node.traverse(func=dictionary.isWord))
 	return results
-
-	value = array_2d[0][0]
-	address = (0,0)
-	cell = findNeighbors(Resident(value, address), array_2d)
-	return cell.walk(func=dictionary.isWord)
-
 	
