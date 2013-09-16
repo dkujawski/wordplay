@@ -58,8 +58,8 @@ class Node(object):
 			results_ref = list()
 
 		if history is None:
-			history = list()
-		history.append(self.address)
+			history = set()
+		history.add(self.address)
 
 		if trail is None:
 			trail = list()
@@ -73,7 +73,7 @@ class Node(object):
 			# ref subsequent loop iterations' history would be contaminated
 			# with history from an unrelated traversal.
 			t_val = list(trail)
-			h_val = list(history)
+			h_val = set(history)
 			# recurse for all neighbors
 			results_ref = neighbor.traverse(func, results_ref, t_val, h_val)
 
