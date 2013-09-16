@@ -138,7 +138,9 @@ def find_larger_words(array_2d, min_len=3):
 	build_graph(array_2d, nodes=nodes)
 
 	results = list()
-	for pos, node in nodes.items():
+	sorted_keys = sorted(nodes.keys())
+	for pos in sorted_keys:
+		node = nodes[pos]
 		# traverse each node collecting the words as they are found
 		results.extend(node.traverse(func=dictionary.is_word))
 	return results
