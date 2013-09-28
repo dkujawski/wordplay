@@ -11,104 +11,67 @@ nested lists like::
 This module uses the :class:`node.Node` class.
 
 """
+from networkx.algorithms.traversal import depth_first_search as dfs
+import networkx as nx
 
 from node import Node
 
-def build_graph(array_2d, pos=(0,0), nodes=None):
+def build_graph(array_2d):
 	"""
-	Using the values from the :param:`array_2d` buid a graph/tree data 
-	structure and build a dict containing a :class:`node.Node` for each element 
-	of :param:`array_2d`.  This uses the :meth:`get_neighbors` to build node 
-	edges for the graph.
+	Using the values from the :param:`array_2d` buid a graph/tree data .  
+	This uses the :meth:`get_neighbors` to build node  edges for the graph.
 
 	:param array_2d: A list of lists containing strings. 
-	:param pos: This is an internal parameter used in the recursive calls
-		to know which element of the :param:`array_2d` to start processing 
-		next.
-	:param nodes: This is a dict of :class:`node.Node` objects used internally
-		to keep track of which elements have already been processed and to 
-		prevent infinite loops in the recursion.  It takes the form::
-
-			{(x,y):node.Node, ...}
-
-		It is also an opportunity to get a list containing a :class:`node.Node` 
-		for each element in the :param:`array_2d` when an initialized dict is 
-		passed in.
-
 	"""
-	if nodes is None:
-		nodes = dict()
-	x,y = pos
-	if pos in nodes:
-		# if the node has already be built, reuse it
-		# no need for duplicate objects
-		node = nodes[pos]
-	else:
-		# this is the first time visiting this element
-		# create a node and add it to the dict.
-		value = array_2d[x][y]
-		node = Node(value, pos)
-		nodes[pos] = node
-	# go get the neighbors, these are edges in the graph
-	neighbors = get_neighbors(nodes, array_2d, pos)
-	# visit each neighbor to ensure it is a valid edge.
-	for neighbor in neighbors:
-		if neighbor in node.neighbors:
-			# we have already have this edge
-			continue
-		node.neighbors.append(neighbor)
-		if node in neighbor.neighbors:
-			# avoid infinite loops, we are an edge of this neighbor
-			continue
-		else:
-			# recurse
-			build_graph(array_2d, neighbor.address, nodes)
+	nx_graph = nx.DiGraph()
+	for x, values in enumerate(array_2d):
+		for y, value in enumerate(values):
+			pos = (x,y)
+			if not nx_graph.has_node(pos):
+				nx_graph.add_node(pos, value=value)
+			# go get the neighbors, these are edges in the graph
+			neighbors = get_neighbors(array_2d, pos)
+			for neighbor in neighbors:
+				if not nx_graph.has_node(neighbor):
+					_x,_y = neighbor
+					nx_graph.add_node(neighbor, value=array_2d[_x][_y])
+				if not nx_graph.has_edge(pos, neighbor):
+					nx_graph.add_edge(pos, neighbor)
+	return nx_graph
 
-def get_neighbors(nodes, array_2d, root_pos):
+def get_neighbors(array_2d, root_pos):
 	""" 
 	Starting from the element at :param:`root_pos` find all adjacent elements
 	in the :param:`array_2d`, create a :class:`node.Node` for each, add them to 
 	the :param:`nodes` dict and return a list which represent edges between the
 	:param:`root_pos` node.
 
-	:param nodes: This is the passed by ref nodes dict from :meth:`build_graph`.  
-		This is passed in to avoid creating dupliecate :class:`node.Node` 
-		objects.  If they already exist in the :param:`nodes` dict we will
-		resuse them.
 	:param array_2d: This is the list of lists passed in from 
 		:meth:`build_graph` to search for neighbors.
 	:param root_pos: This is the element (x,y) that we are using as the point
 		of origin to search for valid edges.
-	:returns: List of :class:`node.Node` objects that are adjacent to the 
+	:returns: List of (x,y) tuples that are adjacent to the 
 		:param:`root_pos` in the :param:`array_2d` lists.
 
 	"""
-	x,y = root_pos	
+	x,y = root_pos
 	# build address search map
-	addresses = ((x-1,y), (x+1,y),
-				 (x,y-1), (x,y+1),
-				 (x+1,y-1), (x+1,y+1),
-				 (x-1,y-1), (x-1,y+1))
+	addresses = ((x-1,y), (x+1,y),		# horiz
+				 (x,y-1), (x,y+1),		# vert
+				 (x+1,y-1), (x+1,y+1),	# right corners
+				 (x-1,y-1), (x-1,y+1))	# left corners
 	neighbors = list()
 	for pos in addresses:
 		_x,_y = pos
 		if _x < 0 or _y < 0:
 			# pass on negative coords
 			continue
-		if pos in nodes:
-			# if a node.Node already exists use it
-			node = nodes[pos]
-		else:
-			try:
-				value = array_2d[_x][_y]
-			except IndexError as ie:
-				# pass on any values outside of array bounds.
-				continue
-			node = Node(value, pos)
-			# new nodes get added to the nodes dict for use later
-			nodes[pos] = node
-		# collect edges
-		neighbors.append(node)
+		try:
+			_v = array_2d[_x][_y]
+		except IndexError as ie:
+			# pass on any values outside of array bounds.
+			continue
+		neighbors.append(pos)
 	return neighbors
 
 
@@ -133,15 +96,17 @@ def find_larger_words(array_2d, min_len=3):
 	import dictionary 
 	# load up the dictionary
 	dictionary.load_dict(min_len)
-	# initialize nodes dict, passed as ref into the graph builder
-	nodes = dict()
-	build_graph(array_2d, nodes=nodes)
-
+	
+	node_graph = build_graph(array_2d)
+	value = nx.get_node_attributes(node_graph, 'value')
 	results = list()
-	sorted_keys = sorted(nodes.keys())
-	for pos in sorted_keys:
-		node = nodes[pos]
-		# traverse each node collecting the words as they are found
-		results.extend(node.traverse(func=dictionary.is_word))
+	#func = dfs.dfs_preorder_nodes
+	func = dfs.dfs_postorder_nodes
+
+	for node in node_graph.nodes():
+		char_str = ''.join([value[n] for n in func(node_graph, node)])
+		print value[n], char_str
+		if dictionary.is_word(char_str):
+			results.append(char_str)
 	return results
 	

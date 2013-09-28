@@ -36,3 +36,9 @@ There is obvious opportunity here to only search the common paths once
 
 improve...
 use the locations as a key to elimitate the need to search from other areas of the set.
+
+----
+
+after reading more about networkx i realize that i may have built a "multigraph" which has multiple edges between each node.  I was focusing too much on the node and traversal that I havent been treating the edges as first class objects.  
+
+an update to this is to create a graph object which contains a node list and edge list which can be operated on.

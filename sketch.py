@@ -33,8 +33,18 @@ if __name__ == "__main__":
 				  	 [ 'S', 'A', 'K' ],
 				     [ 'L', 'B', 'Z' ]]
 
-	from src import locate2d
+	tmp_values_04 = [[ 'I', 'T' ],
+				  	 [ 'S', 'A' ]]
 
-	found_words = locate2d.find_larger_words(tmp_values_02)
-	print found_words
-	print len(found_words)
+	from src import locate2d
+	import pylab as p
+	import networkx as nx
+
+	node_graph = locate2d.build_graph(tmp_values_04)
+	nx.draw(node_graph)
+	p.show()
+	print len(node_graph.nodes()), len(node_graph.edges())
+
+	#found_words = locate2d.find_larger_words(tmp_values_04)
+	#print found_words
+	#print len(found_words)
