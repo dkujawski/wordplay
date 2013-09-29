@@ -11,11 +11,12 @@ nested lists like::
 This module uses the :class:`node.Node` class.
 
 """
-from networkx.algorithms.traversal import depth_first_search as dfs
+from networkx.algorithms import simple_paths as nxasp
 import networkx as nx
 
-from node import Node
+from profilehooks import profile
 
+#@profile
 def build_graph(array_2d):
 	"""
 	Using the values from the :param:`array_2d` buid a graph/tree data .  
@@ -39,6 +40,7 @@ def build_graph(array_2d):
 					nx_graph.add_edge(pos, neighbor)
 	return nx_graph
 
+#@profile
 def get_neighbors(array_2d, root_pos):
 	""" 
 	Starting from the element at :param:`root_pos` find all adjacent elements
@@ -74,7 +76,28 @@ def get_neighbors(array_2d, root_pos):
 		neighbors.append(pos)
 	return neighbors
 
+#@profile
+def traverse(graph):
+	"""
+	Use the :networkx.algorithms.simple_paths:`all_simple_paths` function to 
+	traverse the graph across all combinations of possible source to targets.
+	O(n!)
 
+	"""
+	value = nx.get_node_attributes(graph, 'value')
+	func = nxasp.all_simple_paths
+	results = list()
+	for src_node in graph.nodes():
+		for tgt_node in graph.nodes():
+			if src_node is tgt_node:
+				continue
+			for path in func(graph, src_node, tgt_node):
+				char_str = ''.join([value[n] for n in path])
+				if char_str:
+					results.append(char_str)
+	return results
+
+@profile
 def find_larger_words(array_2d, min_len=3):
 	""" 
 	This is the main entry point into what could be a game.  This will build up
@@ -98,15 +121,10 @@ def find_larger_words(array_2d, min_len=3):
 	dictionary.load_dict(min_len)
 	
 	node_graph = build_graph(array_2d)
-	value = nx.get_node_attributes(node_graph, 'value')
-	results = list()
-	#func = dfs.dfs_preorder_nodes
-	func = dfs.dfs_postorder_nodes
 
-	for node in node_graph.nodes():
-		char_str = ''.join([value[n] for n in func(node_graph, node)])
-		print value[n], char_str
-		if dictionary.is_word(char_str):
-			results.append(char_str)
+	results = list()
+	for path in traverse(node_graph):
+		if dictionary.is_word(path):
+			results.append(path)
 	return results
 	

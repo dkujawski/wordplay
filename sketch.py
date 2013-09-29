@@ -40,11 +40,9 @@ if __name__ == "__main__":
 	import pylab as p
 	import networkx as nx
 
-	node_graph = locate2d.build_graph(tmp_values_04)
-	nx.draw(node_graph)
-	p.show()
-	print len(node_graph.nodes()), len(node_graph.edges())
+	#node_graph = locate2d.build_graph(tmp_values_04)
+	#print len(node_graph.nodes()), len(node_graph.edges())	
 
-	#found_words = locate2d.find_larger_words(tmp_values_04)
-	#print found_words
-	#print len(found_words)
+	found_words = locate2d.find_larger_words(tmp_values_02)
+	print len(found_words), found_words
+	
