@@ -97,7 +97,8 @@ def traverse(graph):
 					results.append(char_str)
 	return results
 
-@profile
+
+#@profile
 def find_larger_words(array_2d, min_len=3):
 	""" 
 	This is the main entry point into what could be a game.  This will build up

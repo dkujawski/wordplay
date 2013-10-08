@@ -37,12 +37,14 @@ if __name__ == "__main__":
 				  	 [ 'S', 'A' ]]
 
 	from src import locate2d
+	from src import render
 	import pylab as p
 	import networkx as nx
 
-	#node_graph = locate2d.build_graph(tmp_values_04)
-	#print len(node_graph.nodes()), len(node_graph.edges())	
+	node_graph = locate2d.build_graph(tmp_values_03)
+	print len(node_graph.nodes()), len(node_graph.edges())	
+	render.draw_traverse(node_graph)
 
-	found_words = locate2d.find_larger_words(tmp_values_02)
-	print len(found_words), found_words
+	#found_words = locate2d.find_larger_words(tmp_values_02)
+	#print len(found_words), found_words
 	
